@@ -81,10 +81,43 @@ nhl_teams_tree = {
     }
 }
 
+nhl_teams_web_prefix = {
+    "ANA": "ANA",
+    "ARI": "ARI",
+    "BOS": "BOS",
+    "BUF": "BUF",
+    "CGY": "CGY",
+    "CAR": "CAR",
+    "CHI": "CHI",
+    "COL": "COL",
+    "CBJ": "CLB",
+    "DAL": "DAL",
+    "DET": "DET",
+    "EDM": "EDM",
+    "FLA": "FLA",
+    "LAK": "LA",
+    "MIN": "MIN",
+    "MTL": "MON",
+    "NSH": "NSH",
+    "NJD": "NJ",
+    "NYI": "NYI",
+    "NYR": "NYR",
+    "OTT": "OTT",
+    "PHI": "PHI",
+    "PIT": "PIT",
+    "SJS": "SJ",
+    "STL": "STL",
+    "TBL": "TB",
+    "TOR": "TOR",
+    "VAN": "VAN",
+    "VGK": "LV",
+    "WSH": "WAS",
+    "WPG": "WPG"
+}
+
 def abbr_to_site(abbr):
-    return f"https://www.cbssports.com/nhl/teams/{abbr}/{nhl_teams_dict[abbr].replace(" ", "-").lower()}"
+    return f"https://www.cbssports.com/nhl/teams/{nhl_teams_web_prefix[abbr]}/{nhl_teams_dict[abbr].replace(" ", "-").lower()}"
 
 if __name__ == "__main__":
     pp = pprint.PrettyPrinter(indent=1)
-    print(abbr_to_site("BOS"))
-    pp.pprint(nhl_teams_tree)
+    print(abbr_to_site("VGK"))
