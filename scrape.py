@@ -1,20 +1,18 @@
 from bs4 import BeautifulSoup
 import requests
 from teams import abbr_to_site, nhl_team_abbreviations
-from concurrent.futures import ThreadPoolExecutor
+from threading import Thread
 
 def scrape(abbr):
    page = requests.get(abbr_to_site(abbr))
-   soup = BeautifulSoup(page.text, "html.parser")
-
-   next_matchup_date = " ".join(soup.find("div", attrs={"class":"TeamMatchup-date"}).text.replace("\n","").split())
-   return abbr, next_matchup_date
+   if page.status_code == 200:
+      soup = BeautifulSoup(page.text, "html.parser")
+      next_matchup_date = " ".join(soup.find("div", attrs={"class":"TeamMatchup-date"}).text.replace("\n","").split()).split('|')[0].strip()
+      print("\033[92m" + f"{abbr} - {next_matchup_date}")
+   else:
+      print("\033[91m" + abbr)
 
 
 if __name__ == "__main__":
-   with ThreadPoolExecutor(max_workers=32) as executor:
-      futures = [executor.submit(scrape, abbr) for abbr in nhl_team_abbreviations]
-
-      for future in futures:
-         response = future.result()
-         print(response)
+   for abbr in nhl_team_abbreviations:
+      Thread(target=scrape, args=(abbr,)).start()
