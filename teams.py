@@ -1,4 +1,4 @@
-import pprint
+
 
 nhl_team_abbreviations = [
     "ANA",  # Anaheim Ducks
@@ -156,6 +156,5 @@ def abbr_to_site(abbr):
     return f"https://www.cbssports.com/nhl/teams/{nhl_teams_web_prefix[abbr]}/{nhl_teams_dict[abbr].replace(" ", "-").lower()}"
 
 if __name__ == "__main__":
-    pp = pprint.PrettyPrinter(indent=1)
     print(abbr_to_site("VGK"))
     print(abbr_to_site("EDM"))
