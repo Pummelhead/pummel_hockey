@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 from teams import abbr_to_site, nhl_team_abbreviations
 from threading import Thread
+import db
 
 def scrape(abbr):
    page = requests.get(abbr_to_site(abbr))
