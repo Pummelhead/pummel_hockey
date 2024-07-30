@@ -2,7 +2,6 @@
 
 nhl_team_abbreviations = [
     "ANA",  # Anaheim Ducks
-    "ARI",  # Arizona Coyotes
     "BOS",  # Boston Bruins
     "BUF",  # Buffalo Sabres
     "CGY",  # Calgary Flames
@@ -29,6 +28,7 @@ nhl_team_abbreviations = [
     "STL",  # St. Louis Blues
     "TBL",  # Tampa Bay Lightning
     "TOR",  # Toronto Maple Leafs
+    "UTA",  # Utah Hockey Club
     "VAN",  # Vancouver Canucks
     "VGK",  # Vegas Golden Knights
     "WSH",  # Washington Capitals
@@ -37,7 +37,6 @@ nhl_team_abbreviations = [
 
 nhl_teams_dict = {
     "ANA": "Anaheim Ducks",
-    "ARI": "Arizona Coyotes",
     "BOS": "Boston Bruins",
     "BUF": "Buffalo Sabres",
     "CGY": "Calgary Flames",
@@ -64,6 +63,7 @@ nhl_teams_dict = {
     "STL": "St Louis Blues",
     "TBL": "Tampa Bay Lightning",
     "TOR": "Toronto Maple Leafs",
+    "UTA": "Utah Hockey Club",
     "VAN": "Vancouver Canucks",
     "VGK": "Vegas Golden Knights",
     "WSH": "Washington Capitals",
@@ -95,13 +95,13 @@ nhl_teams_tree = {
     },
     "Western": {
         "Central": {
-            "ARI": "Arizona Coyotes",
             "CHI": "Chicago Blackhawks",
             "COL": "Colorado Avalanche",
             "DAL": "Dallas Stars",
             "MIN": "Minnesota Wild",
             "NSH": "Nashville Predators",
             "STL": "St Louis Blues",
+            "UTA": "Utah Hockey Club",
             "WPG": "Winnipeg Jets"
         },
         "Pacific": {
@@ -119,7 +119,6 @@ nhl_teams_tree = {
 
 nhl_teams_web_prefix = {
     "ANA": "ANA",
-    "ARI": "ARI",
     "BOS": "BOS",
     "BUF": "BUF",
     "CGY": "CGY",
@@ -146,6 +145,7 @@ nhl_teams_web_prefix = {
     "STL": "STL",
     "TBL": "TB",
     "TOR": "TOR",
+    "UTA": "UTA",
     "VAN": "VAN",
     "VGK": "LV",
     "WSH": "WAS",
