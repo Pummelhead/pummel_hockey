@@ -11,7 +11,7 @@ cur.execute(f'''CREATE TABLE IF NOT EXISTS all_teams_overview
             record TEXT,
             standing TEXT,
             next_game_date_time TEXT,
-            next_game_oponent TEXT,
+            next_game_oponent TEXT
             )''')
 
 for team in nhl_team_abbreviations:
@@ -25,5 +25,5 @@ for team in nhl_team_abbreviations:
                 assists INTEGER,
                 points INTEGER,
                 plus_minus INTEGER,
-                injured BOOLEAN,
+                injured BOOLEAN
                 )''')
