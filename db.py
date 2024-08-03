@@ -27,3 +27,6 @@ for team in nhl_team_abbreviations:
                 plus_minus INTEGER,
                 injured BOOLEAN
                 )''')
+
+conn.commit()
+conn.close()
