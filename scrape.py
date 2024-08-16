@@ -17,7 +17,8 @@ def scrape(abbr):
       next_matchup_opponent = " ".join(soup.find("span", attrs={"class":"TeamName"}).text.replace("\n","").split()).split('|')[0].strip()
       conn = sqlite3.connect('database.db', check_same_thread=False)
       cur = conn.cursor()
-      cur.execute(f"INSERT OR REPLACE INTO all_teams_overview (abbr, next_game_date_time, next_game_opponent) VALUES ('{abbr}', '{next_matchup_date}', '{next_matchup_opponent}')")
+      query = f"INSERT OR REPLACE INTO all_teams_overview (abbr, record, next_game_date_time, next_game_opponent) VALUES (?, ?, ?, ?)"
+      cur.execute(query, (abbr, record, next_matchup_date, next_matchup_opponent)).fetchall()
       conn.commit()
       conn.close()
       print("\033[92m" + f"{abbr} - {record} - {next_matchup_date} against {next_matchup_opponent}")
