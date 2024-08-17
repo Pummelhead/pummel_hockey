@@ -155,6 +155,10 @@ nhl_teams_web_prefix = {
 def abbr_to_site(abbr):
     return f"https://www.cbssports.com/nhl/teams/{nhl_teams_web_prefix[abbr]}/{nhl_teams_dict[abbr].replace(" ", "-").lower()}"
 
+def abbr_to_site_roster(abbr):
+    return f"https://www.cbssports.com/nhl/teams/{nhl_teams_web_prefix[abbr]}/{nhl_teams_dict[abbr].replace(' ', '-').lower()}/roster/"
+
 if __name__ == "__main__":
     print(abbr_to_site("VGK"))
     print(abbr_to_site("EDM"))
+    print(abbr_to_site_roster("EDM"))
