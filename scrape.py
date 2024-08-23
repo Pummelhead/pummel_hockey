@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
-from teams import abbr_to_site, nhl_team_abbreviations
+from teams import abbr_to_site, abbr_to_site_roster, nhl_team_abbreviations
 from threading import Thread
 import sqlite3
 import db
@@ -21,14 +21,37 @@ def scrape(abbr):
       cur.execute(query, (abbr, record, next_matchup_date, next_matchup_opponent)).fetchall()
       conn.commit()
       conn.close()
-      print("\033[92m" + f"{abbr} - {record} - {next_matchup_date} against {next_matchup_opponent}")
+      print("\033[92m" + f"{abbr} scraped")
    else:
-      print("\033[91m" + abbr)
+      print("\033[91m" + f"{abbr} could not be scraped")
+
+def scrape_roster(abbr):
+   page = requests.get(abbr_to_site_roster(abbr))
+   if page.status_code == 200:
+      soup = BeautifulSoup(page.text, "html.parser")
+      roster = soup.find_all("tr", attrs={"class":"TableBase-bodyTr"})
+      for player in roster:
+         tds = player.find_all("td", attrs={"class":"TableBase-bodyTd"})
+         number = tds[0].text.strip()
+         names = tds[1].find_all("a", attrs={"class": ""})
+         name = names[1].text
+         position = tds[2].text.strip()
+         conn = sqlite3.connect('database.db', check_same_thread=False)
+         cur = conn.cursor()
+         query = f"INSERT OR REPLACE INTO {abbr}_roster (number, name, position) VALUES (?, ?, ?)"
+         cur.execute(query, (number, name, position)).fetchall()
+         conn.commit()
+         conn.close()
+         print("\033[92m" + f"{name} - {number} - {position} scraped")
+      print("\033[92m" + f"{abbr} roster scraped")
+   else:
+      print("\033[91m" + f"{abbr} roster could not be scraped")
 
 
 if __name__ == "__main__":
-   for abbr in nhl_team_abbreviations:
-      Thread(target=scrape, args=(abbr,)).start()
+   #for abbr in nhl_team_abbreviations:
+   #   Thread(target=scrape, args=(abbr,)).start()
+   scrape_roster("EDM")
    #for abbr in nhl_team_abbreviations:
    #   conn = sqlite3.connect('database.db')
    #   cur = conn.cursor()

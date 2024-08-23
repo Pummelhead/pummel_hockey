@@ -17,15 +17,15 @@ cur.execute(f'''CREATE TABLE IF NOT EXISTS all_teams_overview
 for team in nhl_team_abbreviations:
     cur.execute(f'''CREATE TABLE IF NOT EXISTS {team}_roster
                 (
-                number INTEGERT PRIMARY KEY,
-                first_name TEXT,
-                last_name TEXT,
+                number INTEGERT,
+                name TEXT,
                 position TEXT,
                 goals INTEGER,
                 assists INTEGER,
                 points INTEGER,
                 plus_minus INTEGER,
-                injured BOOLEAN
+                injured BOOLEAN,
+                PRIMARY KEY(number, name)
                 )''')
 
 conn.commit()
