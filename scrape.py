@@ -36,27 +36,34 @@ def scrape_roster(abbr):
          names = tds[1].find_all("a", attrs={"class": ""})
          name = names[1].text
          position = tds[2].text.strip()
+         try:
+            injury_icon = tds[1].find("span", attrs={"class": "CellPlayerName-icon icon-moon-injury"})
+            injury = injury_icon.find("div", attrs={"class": "Tablebase-tooltipInner"}).text.strip()
+         except:
+            injury = "Healthy"
          conn = sqlite3.connect('database.db', check_same_thread=False)
          cur = conn.cursor()
-         query = f"INSERT OR REPLACE INTO {abbr}_roster (number, name, position) VALUES (?, ?, ?)"
-         cur.execute(query, (number, name, position)).fetchall()
+         query = f"INSERT OR REPLACE INTO {abbr}_roster (number, name, position, injury) VALUES (?, ?, ?, ?)"
+         cur.execute(query, (number, name, position, injury)).fetchall()
          conn.commit()
          conn.close()
-         print("\033[92m" + f"{name} - {number} - {position} scraped")
       print("\033[92m" + f"{abbr} roster scraped")
    else:
       print("\033[91m" + f"{abbr} roster could not be scraped")
 
 
 if __name__ == "__main__":
+   threads = []
    #for abbr in nhl_team_abbreviations:
-   #   Thread(target=scrape, args=(abbr,)).start()
-   scrape_roster("EDM")
-   #for abbr in nhl_team_abbreviations:
-   #   conn = sqlite3.connect('database.db')
-   #   cur = conn.cursor()
-   #   items = cur.execute(f"SELECT * FROM all_teams_overview WHERE abbr = '{abbr}'").fetchall()
-   #   for i in items:
-   #      print(i)
-   #   conn.commit()
-   #   conn.close()
+   #   t1 = Thread(target=scrape, args=(abbr,))
+   #   t1.start()
+   #   threads.append(t1)
+   #for t in threads:
+   #   t.join()
+   #threads.clear()
+   for abbr in nhl_team_abbreviations:
+      t2 = Thread(target=scrape_roster, args=(abbr,))
+      t2.start()
+      threads.append(t2)
+   for t in threads:
+      t.join()

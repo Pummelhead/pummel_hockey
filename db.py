@@ -24,7 +24,7 @@ for team in nhl_team_abbreviations:
                 assists INTEGER,
                 points INTEGER,
                 plus_minus INTEGER,
-                injured BOOLEAN,
+                injury TEXT,
                 PRIMARY KEY(number, name)
                 )''')
 
