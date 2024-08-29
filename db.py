@@ -8,6 +8,7 @@ cur.execute(f'''CREATE TABLE IF NOT EXISTS all_teams_overview
             (
             abbr TEXT PRIMARY KEY,
             name TEXT,
+            division TEXT,
             record TEXT,
             standing TEXT,
             next_game_date_time TEXT,

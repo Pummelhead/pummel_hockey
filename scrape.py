@@ -9,16 +9,17 @@ def scrape(abbr):
    page = requests.get(abbr_to_site(abbr))
    if page.status_code == 200:
       soup = BeautifulSoup(page.text, "html.parser")
-      try:
-         record = " ".join(soup.find("aside", attrs={"class":"PageTitle-description"}).text.replace("\n","").split()).split('|')[0].strip()
-      except:
-         record = "0-0-0"
+      standing_titles = soup.find_all("div", attrs={"class":"GlobalSubnav_overviewItemTitle__oCNrO"})
+      division = standing_titles[1].text.strip()
+      standing_values = soup.find_all("div", attrs={"class":"GlobalSubnav_overviewItemValue__byIm_"})
+      record = standing_values[0].text.strip()
+      standing = standing_values[1].text.strip()
       next_matchup_date = " ".join(soup.find("div", attrs={"class":"TeamMatchup-date"}).text.replace("\n","").split()).split('|')[0].strip()
       next_matchup_opponent = " ".join(soup.find("span", attrs={"class":"TeamName"}).text.replace("\n","").split()).split('|')[0].strip()
       conn = sqlite3.connect('database.db', check_same_thread=False)
       cur = conn.cursor()
-      query = f"INSERT OR REPLACE INTO all_teams_overview (abbr, record, next_game_date_time, next_game_opponent) VALUES (?, ?, ?, ?)"
-      cur.execute(query, (abbr, record, next_matchup_date, next_matchup_opponent)).fetchall()
+      query = f"INSERT OR REPLACE INTO all_teams_overview (abbr, division, record, standing, next_game_date_time, next_game_opponent) VALUES (?, ?, ?, ?, ?, ?)"
+      cur.execute(query, (abbr, division, record, standing, next_matchup_date, next_matchup_opponent)).fetchall()
       conn.commit()
       conn.close()
       print("\033[92m" + f"{abbr} scraped")
@@ -54,16 +55,16 @@ def scrape_roster(abbr):
 
 if __name__ == "__main__":
    threads = []
-   #for abbr in nhl_team_abbreviations:
-   #   t1 = Thread(target=scrape, args=(abbr,))
-   #   t1.start()
-   #   threads.append(t1)
-   #for t in threads:
-   #   t.join()
-   #threads.clear()
    for abbr in nhl_team_abbreviations:
-      t2 = Thread(target=scrape_roster, args=(abbr,))
-      t2.start()
-      threads.append(t2)
+      t1 = Thread(target=scrape, args=(abbr,))
+      t1.start()
+      threads.append(t1)
    for t in threads:
       t.join()
+   threads.clear()
+   #for abbr in nhl_team_abbreviations:
+   #   t2 = Thread(target=scrape_roster, args=(abbr,))
+   #   t2.start()
+   #   threads.append(t2)
+   #for t in threads:
+   #   t.join()
