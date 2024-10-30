@@ -58,9 +58,9 @@ def query_team_positions(abbr, *positions, **kwargs):
 
 if __name__ == "__main__":
     query_team_overview('EDM', next_game, record, standing, division)
-    #query_team_overview('UTA', record, next_game, standing)
-    #query_team_roster('CHI', number, name, position)
+    query_team_overview('UTA', record, next_game, standing)
+    query_team_roster('CHI', number, name, position)
     #query_team_positions('EDM', 'C', number, name)
-    #query_team_positions('UTA', 'G', number, name)
+    query_team_positions('UTA', 'G', number, name)
     #query_team_positions('VGK', 'D', number, name)
     #query_team_positions('CHI', left_wingers, defensemen, columns="number, name, injury")

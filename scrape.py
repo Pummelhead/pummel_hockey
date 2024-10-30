@@ -35,8 +35,27 @@ def scrape_roster(abbr):
          tds = player.find_all("td", attrs={"class":"TableBase-bodyTd"})
          number = tds[0].text.strip()
          names = tds[1].find_all("a", attrs={"class": ""})
+         player_page_link = names[1]["href"]
          name = names[1].text
          position = tds[2].text.strip()
+         player_page = requests.get("https://www.cbssports.com" + player_page_link)
+         print(player_page_link)
+         if player_page.status_code == 200:
+            player_soup = BeautifulSoup(player_page.text, "html.parser")
+            player_page_main_column = player_soup.find("div", attrs={"class": "Page-colMain"})
+            player_stat_table = player_page_main_column.find("table", attrs={"class": "TableBase-table"})
+            print(player_stat_table)
+            player_stats = player_stat_table.find_all("td", attrs={"class": "TableBase-bodyTd TableBase-bodyTd--number"})
+            print(player_stats)
+            assists = int(player_stats[0].text.strip())
+            print(assists)
+            points = int(player_stats[1].text.strip())
+            print(points)
+            plus_minus = int(player_stats[2].text.strip())
+            print(plus_minus)
+            goals = points - assists
+         else:
+            print("\033[91m" + f"{name} individual stats could not be scraped")
          try:
             injury_icon = tds[1].find("span", attrs={"class": "CellPlayerName-icon icon-moon-injury"})
             injury = injury_icon.find("div", attrs={"class": "Tablebase-tooltipInner"}).text.strip()
@@ -44,8 +63,8 @@ def scrape_roster(abbr):
             injury = "Healthy"
          conn = sqlite3.connect('database.db', check_same_thread=False)
          cur = conn.cursor()
-         query = f"INSERT OR REPLACE INTO {abbr}_roster (number, name, position, injury) VALUES (?, ?, ?, ?)"
-         cur.execute(query, (number, name, position, injury)).fetchall()
+         query = f"INSERT OR REPLACE INTO {abbr}_roster (number, name, position, injury, goals, assists, points, plus_minus) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+         cur.execute(query, (number, name, position, injury, goals, assists, points, plus_minus)).fetchall()
          conn.commit()
          conn.close()
       print("\033[92m" + f"{abbr} roster scraped")
@@ -54,17 +73,18 @@ def scrape_roster(abbr):
 
 
 if __name__ == "__main__":
-   threads = []
-   for abbr in nhl_team_abbreviations:
-      t1 = Thread(target=scrape, args=(abbr,))
-      t1.start()
-      threads.append(t1)
-   for t in threads:
-      t.join()
-   threads.clear()
+   #threads = []
+   #for abbr in nhl_team_abbreviations:
+   #   t1 = Thread(target=scrape, args=(abbr,))
+   #   t1.start()
+   #   threads.append(t1)
+   #for t in threads:
+   #   t.join()
+   #threads.clear()
    #for abbr in nhl_team_abbreviations:
    #   t2 = Thread(target=scrape_roster, args=(abbr,))
    #   t2.start()
    #   threads.append(t2)
    #for t in threads:
    #   t.join()
+   scrape_roster("UTA")
