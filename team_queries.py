@@ -9,6 +9,10 @@ standing = "standing"
 number = "number"
 name = "name"
 position = "position"
+goals = "goals"
+assists = "assists"
+points = "points"
+plus_minus = "plus_minus"
 injury = "injury"
 goalies = "G"
 centers = "C"
@@ -57,10 +61,10 @@ def query_team_positions(abbr, *positions, **kwargs):
     conn.close()
 
 if __name__ == "__main__":
-    query_team_overview('EDM', next_game, record, standing, division)
-    query_team_overview('UTA', record, next_game, standing)
-    query_team_roster('CHI', number, name, position)
+    #query_team_overview('EDM', next_game, record, standing, division)
+    #query_team_overview('UTA', record, next_game, standing)
+    #query_team_roster('CHI', number, name, position)
     #query_team_positions('EDM', 'C', number, name)
-    query_team_positions('UTA', 'G', number, name)
+    query_team_roster('UTA', number, name, goals, assists, points, plus_minus, injury)
     #query_team_positions('VGK', 'D', number, name)
     #query_team_positions('CHI', left_wingers, defensemen, columns="number, name, injury")
